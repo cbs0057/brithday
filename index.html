@@ -165,6 +165,33 @@
             border-radius: 50%;
             opacity: 0;
         }
+        .audio-message {
+            position: fixed;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            background-color: rgba(255, 64, 129, 0.9);
+            color: white;
+            padding: 10px;
+            text-align: center;
+            border-radius: 30px;
+            margin: 0 auto;
+            max-width: 80%;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            font-weight: bold;
+            z-index: 100;
+            animation: fadeIn 0.5s forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(20px); }
+        }
     </style>
 </head>
 <body>
@@ -212,6 +239,7 @@
     </div>
     
     <div class="sparkles" id="sparkles"></div>
+    <div class="audio-message" id="audioMessage">🎵 배경 음악을 재생하려면 페이지를 클릭하세요 🎵</div>
     
     <script>
         // 생일 날짜 설정 (2025년 4월 1일)
@@ -292,6 +320,38 @@
             }
         }
         
+        // 배경 음악 재생 함수
+        function playBackgroundMusic() {
+            // 오디오 객체 생성
+            const audio = new Audio('background_music.mp3');
+            // 배경 음악은 반복 재생으로 설정
+            audio.loop = true;
+            // 볼륨 조절 (0.0 ~ 1.0)
+            audio.volume = 0.5;
+            
+            // 자동 재생 시도
+            audio.play().catch(e => {
+                console.log('자동 재생이 불가능합니다:', e);
+                
+                // 오디오 메시지 표시
+                const audioMessage = document.getElementById('audioMessage');
+                audioMessage.style.display = 'block';
+                
+                // 사용자 상호작용(클릭) 후 재생
+                document.body.addEventListener('click', function bodyClick() {
+                    audio.play();
+                    
+                    // 메시지 업데이트 후 3초 후 사라지게 설정
+                    audioMessage.textContent = '🎵 배경 음악이 재생 중입니다 🎵';
+                    setTimeout(() => {
+                        audioMessage.style.animation = 'fadeOut 0.5s forwards';
+                    }, 3000);
+                    
+                    document.body.removeEventListener('click', bodyClick);
+                }, { once: true });
+            });
+        }
+        
         // 이동 애니메이션 스타일 추가
         const style = document.createElement('style');
         style.textContent = `
@@ -307,6 +367,11 @@
             }
         `;
         document.head.appendChild(style);
+        
+        // 페이지 로드 시 배경 음악 재생
+        window.addEventListener('load', function() {
+            playBackgroundMusic();
+        });
         
         // 초기 실행 및 1초마다 업데이트
         updateCountdown();
