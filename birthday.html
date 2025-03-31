@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>재은이의 생일 축하 페이지</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f0ff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 800px;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        h1 {
+            color: #ff4081;
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: bounce 2s infinite;
+        }
+        
+        h2 {
+            color: #9c27b0;
+            font-size: 1.8rem;
+        }
+        
+        .cake {
+            margin: 2rem 0;
+            position: relative;
+        }
+        
+        .balloons {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .balloon {
+            position: absolute;
+            width: 40px;
+            height: 50px;
+            background-color: #ff4081;
+            border-radius: 50%;
+            animation: float 10s infinite ease-in-out;
+        }
+        
+        .balloon::before {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 20px;
+            background-color: #ff4081;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 40%;
+        }
+        
+        .balloon:nth-child(2n) {
+            background-color: #9c27b0;
+        }
+        
+        .balloon:nth-child(3n) {
+            background-color: #ffeb3b;
+        }
+        
+        .balloon:nth-child(5n) {
+            background-color: #2196f3;
+        }
+        
+        .message {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin: 2rem 0;
+        }
+        
+        .gifts {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        /* 선물 상자 스타일 */
+        .gift-box {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            cursor: pointer;
+            perspective: 1000px;
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+        }
+        
+        .gift-box:hover {
+            transform: scale(1.05);
+        }
+        
+        .gift-box.shake {
+            animation: shake 0.5s infinite;
+        }
+        
+        .gift-container {
+            position: absolute;
+            width: 100%;
+            height: 80%;
+            bottom: 0;
+            background: linear-gradient(135deg, #ff4081 0%, #f50057 100%);
+            border-radius: 5px;
+            z-index: 1;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .gift-lid {
+            position: absolute;
+            width: 110%;
+            height: 25%;
+            top: 0;
+            left: -5%;
+            background: linear-gradient(135deg, #ff4081 0%, #f50057 100%);
+            border-radius: 5px;
+            z-index: 2;
+            transform-origin: bottom;
+            transition: transform 0.5s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .gift-box.opened .gift-lid {
+            transform: rotateX(-110deg);
+        }
+        
+        .gift-ribbon {
+            position: absolute;
+            width: 30%;
+            height: 120%;
+            top: -10%;
+            left: 35%;
+            background-color: #ffeb3b;
+            z-index: 3;
+            border-radius: 3px;
+        }
+        
+        .gift-ribbon::before {
+            content: '';
+            position: absolute;
+            width: 120%;
+            height: 30%;
+            top: 35%;
+            left: -10%;
+            background-color: #ffeb3b;
+            border-radius: 3px;
+        }
+        
+        .gift-tag {
+            position: absolute;
+            bottom: -25px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #9c27b0;
+            font-weight: bold;
+            transition: opacity 0.3s;
+        }
+        
+        .gift-box.opened .gift-tag {
+            opacity: 0;
+        }
+        
+        /* 서프라이즈 모달 스타일 */
+        .surprise-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .surprise-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 80%;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: modalPop 0.5s;
+        }
+        
+        @keyframes modalPop {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 30px;
+            cursor: pointer;
+            color: #888;
+        }
+        
+        .close-button:hover {
+            color: #f50057;
+        }
+        
+        .surprise-message {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #9c27b0;
+        }
+        
+        .surprise-animation {
+            height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 5rem;
+            animation: pulse 2s infinite;
+        }
+        
+        /* 오디오 플레이어 스타일 */
+        .audio-player {
+            margin-top: 20px;
+            width: 100%;
+            display: none;
+        }
+        
+        .audio-player audio {
+            width: 100%;
+            border-radius: 30px;
+            outline: none;
+        }
+        
+        .song-info {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: rotate(0); }
+            25% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+        }
+        
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .memory {
+            width: 150px;
+            height: 150px;
+            background-color: #f8bbd0;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        
+        .memory:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0);
+            }
+            50% {
+                transform: translateY(-100px) rotate(10deg);
+            }
+        }
+        
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(0.5); opacity: 0; }
+            10% { opacity: 1; }
+            100% { transform: translateY(-500px) scale(1); opacity: 0; }
+        }
+        
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+        
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: #f50057;
+            top: -10px;
+            animation: confetti-fall 5s linear infinite;
+        }
+        
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(0) rotate(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        footer {
+            margin-top: 2rem;
+            padding: 1rem;
+            color: #9e9e9e;
+        }
+        
+        .audio-message {
+            position: fixed;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            background-color: rgba(255, 64, 129, 0.9);
+            color: white;
+            padding: 10px;
+            text-align: center;
+            border-radius: 30px;
+            margin: 0 auto;
+            max-width: 80%;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            font-weight: bold;
+            z-index: 100;
+            display: none;
+        }
+        
+        .playing .audio-message {
+            display: block;
+            animation: fadeIn 0.5s forwards, fadeOut 0.5s 5s forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(20px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>재은아 생일 축하해! 🎉</h1>
+        <h2>특별한 재은이의 하루를 축하해!</h2>
+        
+        <div class="cake">
+            <!-- 로컬 이미지 사용 시: -->
+            <img src="cake.jpg" alt="생일 케이크" width="250" height="200">
+            
+            <!-- 또는 온라인 이미지 URL 사용 시: -->
+            <!-- <img src="https://example.com/cake-image.jpg" alt="생일 케이크" width="250" height="200"> -->
+        </div>
+        
+        <div class="message">
+            <h3>누나, 생일을 진심으로 축하해!</h3>
+            <p>
+                오늘은 누나만을 위한 특별한 하루야. 행복한 추억과 웃음이 가득한 생일이 되길 바랄게.
+                새롭게 시작하는 한 해도 건강하고 모든 일이 잘 풀리길 바랄게.
+                누나 모든 소원이 이루어지길 바라며, 항상 행복하길 바랄게!
+            </p>
+        </div>
+        
+        <h3>키워드들</h3>
+        <div class="gifts">
+            <div class="gift-box" id="gift1" data-surprise="🎈 행운의 풍선! 올해는 모든 소원이 이루어질 거예요!">
+                <div class="gift-lid"></div>
+                <div class="gift-container"></div>
+                <div class="gift-ribbon"></div>
+                <div class="gift-tag"></div>
+            </div>
+            <div class="gift-box" id="gift2" data-surprise="💖 사랑의 하트! 누나에게 행복한 일만 가득하길 바라요!">
+                <div class="gift-lid"></div>
+                <div class="gift-container"></div>
+                <div class="gift-ribbon"></div>
+                <div class="gift-tag"></div>
+            </div>
+            <div class="gift-box" id="gift3" data-surprise="🌟 반짝이는 별! 누나가 항상 밝게 빛나길 바라요!">
+                <div class="gift-lid"></div>
+                <div class="gift-container"></div>
+                <div class="gift-ribbon"></div>
+                <div class="gift-tag"></div>
+            </div>
+            <div class="gift-box shake" id="gift4" data-surprise="🎶 음악 선물! 누나를 위한 특별한 노래를 준비했어요!">
+                <div class="gift-lid"></div>
+                <div class="gift-container"></div>
+                <div class="gift-ribbon"></div>
+                <div class="gift-tag"></div>
+            </div>
+        </div>
+        
+        <div id="surprise-modal" class="surprise-modal">
+            <div class="surprise-content">
+                <span class="close-button">&times;</span>
+                <div class="surprise-message"></div>
+                <div class="surprise-animation"></div>
+                <div class="audio-player" id="specialAudioPlayer">
+                    <audio controls id="specialSong">
+                        <source src="special_song.mp3" type="audio/mpeg">
+                        브라우저가 오디오를 지원하지 않습니다.
+                    </audio>
+                    <div class="song-info">재은를 위한 특별 노래</div>
+                </div>
+            </div>
+        </div>
+        
+        <h3>소중한 추억들</h3>
+        <div class="gallery">
+            <div class="memory">
+                <img src="memory1.jpg" alt="추억 1" width="150" height="150">
+            </div>
+            <div class="memory">
+                <img src="memory2.jpg" alt="추억 2" width="150" height="150">
+            </div>
+            <div class="memory">
+                <img src="memory3.jpg" alt="추억 3" width="150" height="150">
+            </div>
+            <div class="memory">
+                <img src="memory4.jpg" alt="추억 4" width="150" height="150">
+            </div>
+        </div>
+        
+        <footer>
+            재은이에게 사랑을 담아 제작된 생일 축하 페이지 ❤️
+        </footer>
+    </div>
+    
+    <div class="balloons" id="balloons"></div>
+    <div class="audio-message">🎵 생일 축하 음악이 재생 중입니다! 🎉</div>
+    
+    <script>
+        // 풍선 생성
+        const balloonsContainer = document.getElementById('balloons');
+        for (let i = 0; i < 20; i++) {
+            const balloon = document.createElement('div');
+            balloon.className = 'balloon';
+            balloon.style.left = `${Math.random() * 100}%`;
+            balloon.style.top = `${Math.random() * 100}%`;
+            balloon.style.animationDuration = `${5 + Math.random() * 10}s`;
+            balloon.style.animationDelay = `${Math.random() * 5}s`;
+            balloonsContainer.appendChild(balloon);
+        }
+        
+        // 컨페티 생성
+        function createConfetti() {
+            const confettiContainer = document.body;
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = `${Math.random() * 100}%`;
+                confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                confetti.style.animationDuration = `${3 + Math.random() * 5}s`;
+                confetti.style.animationDelay = `${Math.random() * 5}s`;
+                confettiContainer.appendChild(confetti);
+                
+                // 일정 시간 후 제거
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000);
+            }
+        }
+        
+        // 백그라운드 음악 및 특별 노래 상태 관리
+        let backgroundMusic = null;
+        let specialSongPlaying = false;
+        
+        // 선물 이벤트
+        document.querySelectorAll('.gift-box').forEach(gift => {
+            gift.addEventListener('click', function() {
+                // 이미 열린 선물인지 확인
+                if (this.classList.contains('opened')) {
+                    return;
+                }
+                
+                // 선물 상자 열기 애니메이션
+                this.classList.add('opened');
+                createConfetti();
+                
+                // 서프라이즈 메시지 및 아이콘 가져오기
+                const surpriseMessage = this.getAttribute('data-surprise');
+                const icon = surpriseMessage.split(' ')[0];
+                
+                // 약간의 딜레이 후 모달 표시
+                setTimeout(() => {
+                    // 모달 내용 설정
+                    document.querySelector('.surprise-message').textContent = surpriseMessage.substring(2);
+                    document.querySelector('.surprise-animation').textContent = icon;
+                    
+                    // 오디오 플레이어 숨기기 (기본)
+                    document.getElementById('specialAudioPlayer').style.display = 'none';
+                    
+                    // 멜로디 선물인 경우 (gift4)
+                    if (this.id === 'gift4') {
+                        document.getElementById('specialAudioPlayer').style.display = 'block';
+                        
+                        // 배경 음악 볼륨 줄이기
+                        if (backgroundMusic && !backgroundMusic.paused) {
+                            backgroundMusic.volume = 0.1;
+                        }
+                        
+                        // 특별 노래 재생
+                        const specialSong = document.getElementById('specialSong');
+                        specialSong.play();
+                        specialSongPlaying = true;
+                    }
+                    
+                    // 모달 표시
+                    document.getElementById('surprise-modal').style.display = 'flex';
+                    
+                    // 특별 효과 (예: 아이콘에 따라 다른 효과)
+                    if (icon === '🎈') {
+                        // 추가 풍선 생성
+                        createExtraBalloons();
+                    } else if (icon === '💖') {
+                        // 추가 하트 생성
+                        createHearts();
+                    } else if (icon === '🌟') {
+                        // 반짝이는 별 효과
+                        createStars();
+                    } else if (icon === '🎶') {
+                        // 추가 음악 노트 애니메이션
+                        createMusicNotes();
+                    }
+                }, 500);
+            });
+        });
+        
+        // 모달 닫기 버튼
+        document.querySelector('.close-button').addEventListener('click', function() {
+            document.getElementById('surprise-modal').style.display = 'none';
+            
+            // 특별 노래가 재생 중이었다면 멈추고 배경 음악 볼륨 복구
+            if (specialSongPlaying) {
+                document.getElementById('specialSong').pause();
+                document.getElementById('specialSong').currentTime = 0;
+                specialSongPlaying = false;
+                
+                // 배경 음악 볼륨 원래대로
+                if (backgroundMusic && !backgroundMusic.paused) {
+                    backgroundMusic.volume = 0.5;
+                }
+            }
+        });
+        
+        // 모달 외부 클릭 시 닫기
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('surprise-modal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+                
+                // 특별 노래가 재생 중이었다면 멈추고 배경 음악 볼륨 복구
+                if (specialSongPlaying) {
+                    document.getElementById('specialSong').pause();
+                    document.getElementById('specialSong').currentTime = 0;
+                    specialSongPlaying = false;
+                    
+                    // 배경 음악 볼륨 원래대로
+                    if (backgroundMusic && !backgroundMusic.paused) {
+                        backgroundMusic.volume = 0.5;
+                    }
+                }
+            }
+        });
+        
+        // 추가 풍선 생성 함수
+        function createExtraBalloons() {
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes floatUp {
+                    0% { transform: translateY(0) scale(0.5); opacity: 0; }
+                    10% { opacity: 1; }
+                    100% { transform: translateY(-500px) scale(1); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            for (let i = 0; i < 15; i++) {
+                const balloon = document.createElement('div');
+                balloon.className = 'balloon';
+                balloon.style.left = `${Math.random() * 100}%`;
+                balloon.style.bottom = '-50px';
+                balloon.style.top = 'auto';
+                balloon.style.position = 'fixed';
+                balloon.style.animation = `floatUp ${3 + Math.random() * 4}s forwards`;
+                balloon.style.animationDelay = `${Math.random() * 2}s`;
+                document.body.appendChild(balloon);
+                
+                // 일정 시간 후 제거
+                setTimeout(() => {
+                    balloon.remove();
+                }, 6000);
+            }
+        }
+        
+        // 하트 생성 함수
+        function createHearts() {
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes heartFloat {
+                    0% { transform: translateY(0) scale(0.5); opacity: 0; }
+                    10% { opacity: 1; }
+                    100% { transform: translateY(-500px) scale(1); opacity: 0; }
+                }
+                
+                .heart {
+                    position: fixed;
+                    bottom: -20px;
+                    font-size: 2rem;
+                    color: #ff4081;
+                    z-index: 10;
+                    pointer-events: none;
+                    animation-timing-function: ease-out;
+                }
+            `;
+            document.head.appendChild(style);
+            
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.textContent = '❤️';
+                heart.style.left = `${Math.random() * 100}%`;
+                heart.style.animation = `heartFloat ${3 + Math.random() * 4}s forwards`;
+                heart.style.animationDelay = `${Math.random() * 2}s`;
+                document.body.appendChild(heart);
+                
+                // 일정 시간 후 제거
+                setTimeout(() => {
+                    heart.remove();
+                }, 7000);
+            }
+        }
+        
+        // 별 생성 함수
+        function createStars() {
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes twinkle {
+                    0%, 100% { opacity: 1; transform: scale(1); }
+                    50% { opacity: 0.5; transform: scale(0.7); }
+                }
+                
+                .star {
+                    position: absolute;
+                    color: gold;
+                    z-index: 10;
+                    pointer-events: none;
+                }
+            `;
+            document.head.appendChild(style);
+            
+            for (let i = 0; i < 30; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.textContent = '⭐';
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.fontSize = `${1 + Math.random() * 2}rem`;
+                star.style.animation = `twinkle ${1 + Math.random() * 3}s infinite`;
+                document.body.appendChild(star);
+                
+                // 일정 시간 후 제거
+                setTimeout(() => {
+                    star.remove();
+                }, 8000);
+            }
+        }
+        
+        // 음악 노트 생성 함수
+        function createMusicNotes() {
+            const notes = ['🎵', '🎶', '🎼', '🎸', '🎹', '🎷', '🎺'];
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes float-dance {
+                    0% { transform: translateY(0) translateX(0) rotate(0); opacity: 0; }
+                    10% { opacity: 1; }
+                    50% { transform: translateY(-100px) translateX(100px) rotate(20deg); }
+                    100% { transform: translateY(-200px) translateX(-100px) rotate(-20deg); opacity: 0; }
+                }
+                
+                .music-note {
+                    position: fixed;
+                    bottom: 20%;
+                    font-size: 2rem;
+                    z-index: 10;
+                    pointer-events: none;
+                }
+            `;
+            document.head.appendChild(style);
+            
+            for (let i = 0; i < 20; i++) {
+                const note = document.createElement('div');
+                note.className = 'music-note';
+                note.textContent = notes[Math.floor(Math.random() * notes.length)];
+                note.style.left = `${Math.random() * 100}%`;
+                note.style.animation = `float-dance ${3 + Math.random() * 4}s forwards`;
+                note.style.animationDelay = `${Math.random() * 2}s`;
+                document.body.appendChild(note);
+                
+                // 일정 시간 후 제거
+                setTimeout(() => {
+                    note.remove();
+                }, 7000);
+            }
+        }
+        
+        // 페이지 로드 시 컨페티 효과와 음악 재생
+        window.addEventListener('load', function() {
+            createConfetti();
+            playBirthdaySong();
+            document.body.classList.add('playing');
+        });
+        
+        // 생일 노래 재생 함수
+        function playBirthdaySong() {
+            // 오디오 객체 생성
+            backgroundMusic = new Audio('happy_birthday.mp3');
+            // 반복 재생 설정
+            backgroundMusic.loop = true;
+            backgroundMusic.volume = 0.5;
+            
+            // 자동 재생 시도
+            backgroundMusic.play().catch(e => {
+                console.log('자동 재생이 불가능합니다:', e);
+                // 자동 재생 정책 때문에 사용자 상호작용이 필요할 수 있음
+                
+                // 클릭 시 재생 유도 메시지
+                const audioMessage = document.querySelector('.audio-message');
+                audioMessage.textContent = '🎵 페이지를 클릭하면 생일 축하 음악이 재생됩니다! 🎉';
+                audioMessage.style.display = 'block';
+                
+                // 사용자 상호작용(클릭) 후 재생
+                document.body.addEventListener('click', function bodyClick() {
+                    backgroundMusic.play();
+                    audioMessage.textContent = '🎵 생일 축하 음악이 재생 중입니다! 🎉';
+                    setTimeout(() => {
+                        audioMessage.style.display = 'none';
+                    }, 5000);
+                    document.body.removeEventListener('click', bodyClick);
+                }, { once: true });
+            });
+        }
+        
+        // 초기 컨페티 효과
+        createConfetti();
+    </script>
+</body>
+</html>
