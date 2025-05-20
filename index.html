@@ -3,395 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>은별이의 생일을 기다리며</title>
+    <title>1주년</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700&display=swap');
+        
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4eafd 100%);
+            font-family: 'Nanum Myeongjo', serif;
+            background-color: #f9f3f3;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            color: #333;
-            text-align: center;
+            color: #4a4a4a;
         }
         
-        .container {
-            background-color: rgba(255, 255, 255, 0.9);
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            padding: 40px;
-            max-width: 600px;
+        .letter-container {
+            max-width: 800px;
             width: 90%;
-        }
-        
-        h1 {
-            color: #ff4081;
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .message {
-            margin: 30px 0;
-            line-height: 1.6;
-        }
-        
-        .countdown-container {
-            margin: 40px 0;
-        }
-        
-        .countdown {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-        
-        .countdown-box {
-            background-color: #ff4081;
-            color: white;
-            width: 80px;
-            height: 80px;
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 5px 15px rgba(255, 64, 129, 0.3);
-        }
-        
-        .countdown-value {
-            font-size: 1.8rem;
-            font-weight: bold;
-        }
-        
-        .countdown-label {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-        }
-        
-        .btn {
-            background-color: #ff4081;
-            color: white;
-            border: none;
-            border-radius: 50px;
-            padding: 15px 40px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(255, 64, 129, 0.3);
-            transition: all 0.3s;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 30px;
-        }
-        
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(255, 64, 129, 0.4);
-        }
-        
-        .hidden {
-            display: none;
-        }
-        
-        .envelope {
-            position: relative;
-            width: 120px;
-            height: 80px;
-            margin: 20px auto;
-            background-color: #ff4081;
+            background-color: #fff;
+            padding: 50px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             border-radius: 5px;
-            overflow: hidden;
-            transition: all 0.5s;
-            cursor: pointer;
+            position: relative;
         }
         
-        .envelope:hover {
-            transform: scale(1.05);
+        .letter-paper {
+            /* 줄간격 조정 */
+            background: linear-gradient(to bottom, transparent, transparent 29px, #e8e8e8 29px, #e8e8e8 30px);
+            background-size: 100% 30px;
+            padding: 20px 0;
         }
         
-        .envelope::before {
-            content: "";
-            position: absolute;
-            width: 120px;
-            height: 80px;
-            background-color: #ff65a3;
-            clip-path: polygon(50% 40%, 0 0, 100% 0);
-            top: 0;
-            transition: all 0.5s;
+        .date {
+            text-align: right;
+            margin-bottom: 40px;
+            font-style: italic;
+            line-height: 30px; /* 줄과 맞춤 */
         }
         
-        .envelope.open::before {
-            transform: translateY(-40px) scale(0.5);
-            opacity: 0;
+        .greeting {
+            font-size: 22px;
+            margin-bottom: 30px;
+            line-height: 30px; /* 줄과 맞춤 */
         }
         
-        .letter {
-            position: absolute;
-            background-color: white;
-            width: 90px;
-            height: 60px;
-            top: 10px;
-            left: 15px;
-            transition: all 0.5s;
-            z-index: -1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        .content {
+            text-align: justify;
+            font-size: 18px;
+            margin-bottom: 40px;
+        }
+        
+        .content p {
+            margin: 0 0 30px 0; /* 단락 간격 조정 */
+            line-height: 30px; /* 줄과 맞춤 */
+        }
+        
+        .closing {
+            text-align: right;
             font-size: 20px;
-            color: #ff4081;
+            margin-top: 50px;
+            line-height: 30px; /* 줄과 맞춤 */
         }
         
-        .envelope.open .letter {
-            transform: translateY(-40px);
-            z-index: 1;
-        }
-        
-        .sparkles {
+        .paper-clip {
             position: absolute;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 20px;
+            background-color: #ccc;
+            border-radius: 5px 5px 0 0;
         }
         
-        .sparkle {
+        .paper-clip:after {
+            content: '';
             position: absolute;
-            width: 10px;
-            height: 10px;
-            background-color: #ffeb3b;
-            border-radius: 50%;
-            opacity: 0;
-        }
-        .audio-message {
-            position: fixed;
-            bottom: 20px;
-            left: 0;
-            right: 0;
-            background-color: rgba(255, 64, 129, 0.9);
-            color: white;
-            padding: 10px;
-            text-align: center;
-            border-radius: 30px;
-            margin: 0 auto;
-            max-width: 80%;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            font-weight: bold;
-            z-index: 100;
-            animation: fadeIn 0.5s forwards;
+            bottom: -10px;
+            left: 10px;
+            width: 40px;
+            height: 30px;
+            border: 5px solid #ccc;
+            border-top: none;
+            border-radius: 0 0 20px 20px;
         }
         
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes fadeOut {
-            from { opacity: 1; transform: translateY(0); }
-            to { opacity: 0; transform: translateY(20px); }
+        @media (max-width: 600px) {
+            .letter-container {
+                padding: 30px;
+            }
+            
+            .letter-paper {
+                background-size: 100% 30px;
+            }
+            
+            .greeting {
+                font-size: 20px;
+                line-height: 30px;
+            }
+            
+            .content {
+                font-size: 16px;
+            }
+            
+            .content p {
+                line-height: 30px;
+            }
+            
+            .closing {
+                line-height: 30px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>은별이의 생일을 기다리며</h1>
-        
-        <div class="message">
-            <p>곧 다가올 은별이의 특별한 생일을 위한 카운트다운이 시작되었습니다.</p>
-            <p>소중한 은별이에게 전하고 싶은 마음을 담아 준비했습니다.</p>
-        </div>
-        
-        <div class="envelope" id="envelope">
-            <div class="letter">🎂</div>
-        </div>
-        
-        <div class="countdown-container">
-            <h2>생일까지 남은 시간</h2>
-            <div class="countdown">
-                <div class="countdown-box">
-                    <div class="countdown-value" id="days">00</div>
-                    <div class="countdown-label">일</div>
-                </div>
-                <div class="countdown-box">
-                    <div class="countdown-value" id="hours">00</div>
-                    <div class="countdown-label">시간</div>
-                </div>
-                <div class="countdown-box">
-                    <div class="countdown-value" id="minutes">00</div>
-                    <div class="countdown-label">분</div>
-                </div>
-                <div class="countdown-box">
-                    <div class="countdown-value" id="seconds">00</div>
-                    <div class="countdown-label">초</div>
-                </div>
+    <div class="letter-container">
+        <div class="paper-clip"></div>
+        <div class="letter-paper">
+            <div class="date">2025년 5월 20일</div>
+            
+            <div class="greeting">사랑하는 재은에게,</div>
+            
+            <div class="content">
+                <p>우리가 만난지 벌써 1년이 지났네</p>
+                
+                <p>처음 만났을 때 설레었고 그후로도 여기저기 놀러다니고 이것저것 많이 하니 1년이 순식간에 지나갔어.</p>
+                
+                <p>누나는 항상 재밌고 이것저것 알려주고 같이있으면 좋았어.</p>
+                
+                <p>1년이라는 시간이 지났지만, 생각해보면 엄청 오래된것도 같지않아.</p>
+                
+                <p>때로는 삐걱거리기도 하였지만 </p>
+                
+                <p>우리의 1주년을 진심으로 축하하고. 앞으로도 매일 사랑하자.</p>
+            </div>
+            
+            <div class="closing">
+                <p>,</p>
+                <p>❤️</p>
             </div>
         </div>
-        
-        <div id="birthdayButton" class="hidden">
-            <a href="birthday.html" class="btn">생일 축하 페이지 열기</a>
-        </div>
-        
-        <div id="comingSoon" class="message">
-            <p>아직 생일이 아니에요! 카운트다운이 끝나면 특별한 축하 페이지가 준비됩니다.</p>
-        </div>
     </div>
-    
-    <div class="sparkles" id="sparkles"></div>
-    <div class="audio-message" id="audioMessage">🎵 배경 음악을 재생하려면 페이지를 클릭하세요 🎵</div>
-    
-    <script>
-        // 생일 날짜 설정 (2025년 4월 1일)
-        const birthdayDate = new Date(2025, 3, 1); // 월은 0부터 시작, 3 = 4월
-        
-        // 카운트다운 업데이트 함수
-        function updateCountdown() {
-            const now = new Date();
-            const diff = birthdayDate - now;
-            
-            // 생일이 지났는지 확인
-            if (diff <= 0) {
-                // 생일이 되었으면 버튼 표시
-                document.getElementById('birthdayButton').classList.remove('hidden');
-                document.getElementById('comingSoon').classList.add('hidden');
-                
-                // 카운트다운 값 0으로 설정
-                document.getElementById('days').textContent = '00';
-                document.getElementById('hours').textContent = '00';
-                document.getElementById('minutes').textContent = '00';
-                document.getElementById('seconds').textContent = '00';
-                
-                // 자동으로 봉투 열기
-                document.getElementById('envelope').classList.add('open');
-                createSparkles();
-                
-                return;
-            }
-            
-            // 카운트다운 계산
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-            
-            // 화면 업데이트
-            document.getElementById('days').textContent = days.toString().padStart(2, '0');
-            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
-            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
-            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
-        }
-        
-        // 봉투 애니메이션
-        document.getElementById('envelope').addEventListener('click', function() {
-            this.classList.toggle('open');
-            
-            if (this.classList.contains('open')) {
-                createSparkles();
-            }
-        });
-        
-        // 반짝이 효과 생성
-        function createSparkles() {
-            const sparklesContainer = document.getElementById('sparkles');
-            sparklesContainer.innerHTML = '';
-            
-            for (let i = 0; i < 50; i++) {
-                const sparkle = document.createElement('div');
-                sparkle.className = 'sparkle';
-                
-                // 랜덤 위치 설정
-                const x = Math.random() * 100;
-                const y = Math.random() * 100;
-                
-                sparkle.style.left = `${x}%`;
-                sparkle.style.top = `${y}%`;
-                sparkle.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 70%)`;
-                
-                // 애니메이션 설정
-                sparkle.style.animation = `
-                    sparkle ${1 + Math.random() * 2}s linear forwards,
-                    move ${3 + Math.random() * 5}s ease-out forwards
-                `;
-                
-                sparkle.style.animationDelay = `${Math.random() * 0.5}s`;
-                
-                sparklesContainer.appendChild(sparkle);
-            }
-        }
-        
-        // 배경 음악 재생 함수
-        function playBackgroundMusic() {
-            // 오디오 객체 생성
-            const audio = new Audio('background_music.mp3');
-            // 배경 음악은 반복 재생으로 설정
-            audio.loop = true;
-            // 볼륨 조절 (0.0 ~ 1.0)
-            audio.volume = 0.5;
-            
-            // 자동 재생 시도
-            audio.play().catch(e => {
-                console.log('자동 재생이 불가능합니다:', e);
-                
-                // 오디오 메시지 표시
-                const audioMessage = document.getElementById('audioMessage');
-                audioMessage.style.display = 'block';
-                
-                // 사용자 상호작용(클릭) 후 재생
-                document.body.addEventListener('click', function bodyClick() {
-                    audio.play();
-                    
-                    // 메시지 업데이트 후 3초 후 사라지게 설정
-                    audioMessage.textContent = '🎵 배경 음악이 재생 중입니다 🎵';
-                    setTimeout(() => {
-                        audioMessage.style.animation = 'fadeOut 0.5s forwards';
-                    }, 3000);
-                    
-                    document.body.removeEventListener('click', bodyClick);
-                }, { once: true });
-            });
-        }
-        
-        // 이동 애니메이션 스타일 추가
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes sparkle {
-                0% { transform: scale(0); opacity: 0; }
-                20% { opacity: 1; }
-                100% { transform: scale(1); opacity: 0; }
-            }
-            
-            @keyframes move {
-                0% { transform: translateY(0) translateX(0); }
-                100% { transform: translateY(-100px) translateX(${Math.random() > 0.5 ? '+' : '-'}${Math.random() * 100}px); }
-            }
-        `;
-        document.head.appendChild(style);
-        
-        // 페이지 로드 시 배경 음악 재생
-        window.addEventListener('load', function() {
-            playBackgroundMusic();
-        });
-        
-        // 초기 실행 및 1초마다 업데이트
-        updateCountdown();
-        setInterval(updateCountdown, 1000);
-        
-        // 현재 페이지가 시작 페이지인지 확인하고 테스트 버튼 표시 (개발용)
-        // 실제 사용 시 아래 코드는 제거하세요
-        /*
-        const testButton = document.createElement('button');
-        testButton.textContent = '테스트: 생일 버튼 표시';
-        testButton.style.position = 'fixed';
-        testButton.style.bottom = '10px';
-        testButton.style.right = '10px';
-        testButton.style.zIndex = '1000';
-        testButton.addEventListener('click', function() {
-            document.getElementById('birthdayButton').classList.toggle('hidden');
-            document.getElementById('comingSoon').classList.toggle('hidden');
-        });
-        document.body.appendChild(testButton);
-        */
-    </script>
 </body>
 </html>
