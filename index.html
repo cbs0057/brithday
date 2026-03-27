@@ -1,150 +1,506 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1주년</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700&display=swap');
-        
-        body {
-            font-family: 'Nanum Myeongjo', serif;
-            background-color: #f9f3f3;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            color: #4a4a4a;
-        }
-        
-        .letter-container {
-            max-width: 800px;
-            width: 90%;
-            background-color: #fff;
-            padding: 50px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            border-radius: 5px;
-            position: relative;
-        }
-        
-        .letter-paper {
-            /* 줄간격 조정 */
-            background: linear-gradient(to bottom, transparent, transparent 29px, #e8e8e8 29px, #e8e8e8 30px);
-            background-size: 100% 30px;
-            padding: 20px 0;
-        }
-        
-        .date {
-            text-align: right;
-            margin-bottom: 40px;
-            font-style: italic;
-            line-height: 30px; /* 줄과 맞춤 */
-        }
-        
-        .greeting {
-            font-size: 22px;
-            margin-bottom: 30px;
-            line-height: 30px; /* 줄과 맞춤 */
-        }
-        
-        .content {
-            text-align: justify;
-            font-size: 18px;
-            margin-bottom: 40px;
-        }
-        
-        .content p {
-            margin: 0 0 30px 0; /* 단락 간격 조정 */
-            line-height: 30px; /* 줄과 맞춤 */
-        }
-        
-        .closing {
-            text-align: right;
-            font-size: 20px;
-            margin-top: 50px;
-            line-height: 30px; /* 줄과 맞춤 */
-        }
-        
-        .paper-clip {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 20px;
-            background-color: #ccc;
-            border-radius: 5px 5px 0 0;
-        }
-        
-        .paper-clip:after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 10px;
-            width: 40px;
-            height: 30px;
-            border: 5px solid #ccc;
-            border-top: none;
-            border-radius: 0 0 20px 20px;
-        }
-        
-        @media (max-width: 600px) {
-            .letter-container {
-                padding: 30px;
-            }
-            
-            .letter-paper {
-                background-size: 100% 30px;
-            }
-            
-            .greeting {
-                font-size: 20px;
-                line-height: 30px;
-            }
-            
-            .content {
-                font-size: 16px;
-            }
-            
-            .content p {
-                line-height: 30px;
-            }
-            
-            .closing {
-                line-height: 30px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday 💖</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --pink:   #ff6fd8;
+      --gold:   #ffe16a;
+      --orange: #ff9a44;
+      --bg:     #07000f;
+    }
+
+    html, body {
+      width: 100%; height: 100%;
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    #bgCanvas, #confettiCanvas {
+      position: fixed; inset: 0; pointer-events: none;
+    }
+    #bgCanvas       { z-index: 0; }
+    #confettiCanvas { z-index: 50; }
+
+    #starsLayer { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
+    .star {
+      position: absolute; background: #fff; border-radius: 50%;
+      animation: twinkle ease-in-out infinite;
+    }
+    @keyframes twinkle {
+      0%,100%{ opacity:.12; transform:scale(1); }
+      50%    { opacity:1;   transform:scale(1.8); }
+    }
+
+    /* ══ COUNTDOWN ══ */
+    #countdownPage {
+      position: relative; z-index: 10;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 3rem 1.5rem;
+      text-align: center;
+    }
+
+    .cd-eyebrow {
+      font-size: .72rem; font-weight: 500;
+      letter-spacing: .2em; text-transform: uppercase;
+      color: rgba(255,255,255,.38);
+      margin-bottom: 2.5rem;
+      animation: fadeUp .7s ease both;
+    }
+    .cd-heart {
+      font-size: 3.8rem; line-height: 1;
+      margin-bottom: 1.6rem;
+      animation: heartbeat 1.8s ease-in-out infinite, fadeUp .7s ease both .1s;
+    }
+    @keyframes heartbeat {
+      0%,100%{ transform:scale(1); }
+      14%    { transform:scale(1.18); }
+      28%    { transform:scale(1); }
+      42%    { transform:scale(1.12); }
+      56%    { transform:scale(1); }
+    }
+    .cd-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 5vw, 2.7rem); font-weight: 700;
+      background: linear-gradient(135deg, var(--pink), var(--gold), var(--orange));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.2; margin-bottom: .5rem;
+      animation: fadeUp .7s ease both .2s;
+    }
+    .cd-sub {
+      font-family: 'Playfair Display', serif; font-style: italic;
+      font-size: 1rem; color: rgba(255,255,255,.4);
+      margin-bottom: 3.5rem;
+      animation: fadeUp .7s ease both .3s;
+    }
+
+    .cd-blocks {
+      display: flex; gap: 14px; flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 3rem;
+      animation: fadeUp .8s ease both .4s;
+    }
+    .cd-block {
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 18px;
+      padding: 1.4rem 1.8rem 1.2rem;
+      min-width: 88px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .cd-num {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 8vw, 4rem); font-weight: 700;
+      background: linear-gradient(160deg, var(--pink), var(--gold));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1; display: block;
+    }
+    .cd-unit {
+      font-size: .68rem; font-weight: 500;
+      letter-spacing: .15em; text-transform: uppercase;
+      color: rgba(255,255,255,.35);
+      margin-top: .4rem; display: block;
+    }
+    .cd-msg {
+      font-size: .94rem; color: rgba(255,255,255,.42);
+      line-height: 1.8;
+      animation: fadeUp .8s ease both .55s;
+    }
+
+    /* ══ BIRTHDAY ══ */
+    #birthdayPage {
+      position: relative; z-index: 10;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 3rem 1.5rem 5rem;
+    }
+
+    .bd-badge {
+      background: linear-gradient(135deg, var(--pink), var(--orange));
+      color: #fff; font-size: 11px; font-weight: 500;
+      letter-spacing: .18em; text-transform: uppercase;
+      padding: 6px 22px; border-radius: 999px;
+      margin-bottom: 2rem;
+      animation: popIn .6s cubic-bezier(.34,1.56,.64,1) both;
+    }
+    @keyframes popIn {
+      from { opacity:0; transform:scale(.7); }
+      to   { opacity:1; transform:scale(1); }
+    }
+    .bd-cake {
+      font-size: 5rem; line-height: 1;
+      margin-bottom: 1rem;
+      animation: cakeBounce 2.4s ease-in-out infinite, popIn .7s ease both .15s;
+    }
+    @keyframes cakeBounce {
+      0%,100%{ transform:translateY(0) rotate(-4deg); }
+      50%    { transform:translateY(-16px) rotate(4deg); }
+    }
+    .bd-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 9vw, 5.2rem); font-weight: 700;
+      background: linear-gradient(135deg, var(--pink) 0%, var(--gold) 50%, var(--orange) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.08; text-align: center;
+      margin-bottom: .4rem;
+      animation: fadeUp .8s ease both .2s;
+    }
+    .bd-sub {
+      font-family: 'Playfair Display', serif; font-style: italic;
+      font-size: 1.05rem; color: rgba(255,255,255,.4);
+      text-align: center; margin-bottom: 2.5rem;
+      animation: fadeUp .8s ease both .3s;
+    }
+
+    .balloons {
+      display: flex; gap: .7rem; margin-bottom: 3rem;
+      animation: fadeUp .8s ease both .4s;
+    }
+    .balloon { font-size: 2.5rem; animation: floatUp ease-in-out infinite; }
+    .balloon:nth-child(1){ animation-duration:3.4s; animation-delay:0s; }
+    .balloon:nth-child(2){ animation-duration:2.9s; animation-delay:.4s; }
+    .balloon:nth-child(3){ animation-duration:3.7s; animation-delay:.8s; }
+    .balloon:nth-child(4){ animation-duration:3.1s; animation-delay:.2s; }
+    .balloon:nth-child(5){ animation-duration:2.7s; animation-delay:.6s; }
+    @keyframes floatUp {
+      0%,100%{ transform:translateY(0) rotate(-6deg); }
+      50%    { transform:translateY(-22px) rotate(6deg); }
+    }
+
+    /* Slideshow */
+    .slideshow-wrap {
+      width: 100%; max-width: 600px;
+      animation: fadeUp .9s ease both .5s;
+    }
+    .slide-track {
+      position: relative; min-height: 270px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .slide {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      padding: 2.6rem 2rem;
+      background: rgba(255,255,255,.055);
+      border: 1px solid rgba(255,111,216,.22);
+      border-radius: 24px;
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      text-align: center;
+      opacity: 0;
+      transform: translateX(70px) scale(.96);
+      transition: opacity .6s cubic-bezier(.4,0,.2,1), transform .6s cubic-bezier(.4,0,.2,1);
+      pointer-events: none;
+    }
+    .slide.active {
+      opacity: 1; transform: translateX(0) scale(1);
+      pointer-events: auto;
+    }
+    .slide.exit-left {
+      opacity: 0; transform: translateX(-70px) scale(.96);
+      transition: opacity .6s cubic-bezier(.4,0,.2,1), transform .6s cubic-bezier(.4,0,.2,1);
+    }
+    .slide-emoji { font-size: 2.8rem; margin-bottom: 1.1rem; display: block; }
+    .slide-text {
+      font-family: 'Playfair Display', serif; font-style: italic;
+      font-size: clamp(1.05rem, 3vw, 1.22rem);
+      line-height: 1.9; color: rgba(255,255,255,.92);
+    }
+
+    .slide-progress {
+      height: 2px; background: rgba(255,255,255,.1);
+      border-radius: 2px; margin-top: 1.5rem; overflow: hidden;
+    }
+    .slide-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--pink), var(--orange));
+      border-radius: 2px; transition: width .45s ease;
+    }
+
+    .slide-dots {
+      display: flex; justify-content: center; gap: 8px; margin-top: 1.4rem;
+    }
+    .dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: rgba(255,255,255,.22); cursor: pointer;
+      transition: background .3s, transform .3s;
+    }
+    .dot.active { background: var(--pink); transform: scale(1.45); }
+
+    .slide-nav {
+      display: flex; justify-content: center; gap: 12px; margin-top: 1.3rem;
+    }
+    .nav-btn {
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 50%; width: 44px; height: 44px;
+      color: rgba(255,255,255,.7); font-size: 1.1rem;
+      cursor: pointer; transition: all .2s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .nav-btn:hover { background: rgba(255,111,216,.25); border-color: var(--pink); color: #fff; }
+
+    .bd-footer {
+      text-align: center; color: rgba(255,255,255,.18);
+      font-size: .73rem; margin-top: 3rem; letter-spacing: .04em;
+    }
+
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(22px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    .hidden { display: none !important; }
+  </style>
 </head>
 <body>
-    <div class="letter-container">
-        <div class="paper-clip"></div>
-        <div class="letter-paper">
-            <div class="date">2025년 5월 20일</div>
-            
-            <div class="greeting">사랑하는 재은에게,</div>
-            
-            <div class="content">
-                <p>우리가 만난지 벌써 1년이 지났네</p>
-                
-                <p>처음 만났을 때 설레었고 그후로도 여기저기 놀러다니고 이것저것 많이 하니 1년이 순식간에 지나갔어.</p>
-                
-                <p>누나는 항상 재밌고 이것저것 알려주고 같이있으면 좋았어.</p>
-                
-                <p>1년이라는 시간이 지났지만, 생각해보면 엄청 오래된것도 같지않아.</p>
-                
-                <p>때로는 삐걱거리기도 하였지만 </p>
-                
-                <p>우리의 1주년을 진심으로 축하하고. 앞으로도 매일 사랑하자.</p>
-            </div>
-            
-            <div class="closing">
-                <p>,</p>
-                <p>❤️</p>
-            </div>
-        </div>
+
+<canvas id="bgCanvas"></canvas>
+<canvas id="confettiCanvas"></canvas>
+<div id="starsLayer"></div>
+
+<!-- COUNTDOWN -->
+<div id="countdownPage" class="hidden">
+  <div class="cd-eyebrow">그날이 오고 있어요</div>
+  <div class="cd-heart">💗</div>
+  <div class="cd-title">생일이 얼마 남지 않았어요</div>
+  <div class="cd-sub">April 1st is almost here ✨</div>
+  <div class="cd-blocks">
+    <div class="cd-block">
+      <span class="cd-num" id="cd-days">00</span>
+      <span class="cd-unit">일</span>
     </div>
+    <div class="cd-block">
+      <span class="cd-num" id="cd-hours">00</span>
+      <span class="cd-unit">시간</span>
+    </div>
+    <div class="cd-block">
+      <span class="cd-num" id="cd-minutes">00</span>
+      <span class="cd-unit">분</span>
+    </div>
+    <div class="cd-block">
+      <span class="cd-num" id="cd-seconds">00</span>
+      <span class="cd-unit">초</span>
+    </div>
+  </div>
+  <div class="cd-msg">
+    당신의 특별한 날을 기다리고 있어요 💖<br/>
+    April 1 · Happy Birthday
+  </div>
+</div>
+
+<!-- BIRTHDAY -->
+<div id="birthdayPage" class="hidden">
+  <div class="bd-badge">🎂 오늘은 특별한 날 🎂</div>
+  <div class="bd-cake">🎂</div>
+  <div class="bd-title">Happy Birthday</div>
+  <div class="bd-sub">당신이 태어난 날, 세상이 더 빛났어요</div>
+  <div class="balloons">
+    <span class="balloon">🎈</span>
+    <span class="balloon">🎉</span>
+    <span class="balloon">💖</span>
+    <span class="balloon">🎊</span>
+    <span class="balloon">🎈</span>
+  </div>
+
+  <div class="slideshow-wrap">
+    <div class="slide-track" id="slideTrack"></div>
+    <div class="slide-progress"><div class="slide-progress-fill" id="progressFill"></div></div>
+    <div class="slide-dots" id="slideDots"></div>
+    <div class="slide-nav">
+      <button class="nav-btn" onclick="prevSlide()">←</button>
+      <button class="nav-btn" onclick="nextSlide()">→</button>
+    </div>
+  </div>
+
+  <div class="bd-footer">Made with love · Happy Birthday 💖</div>
+</div>
+
+<script>
+/* ── 메시지 내용 (원하는 대로 수정하세요) ── */
+const MESSAGES = [
+  { emoji: '🌸', text: '오늘은 이 세상에서 가장 소중한 사람이\n태어난 날이에요.\n당신이 존재해줘서 고마워요.' },
+  { emoji: '✨', text: '당신의 웃음은\n내 하루 중 가장 빛나는 순간이에요.\n오늘도, 내일도, 항상 웃어줘요.' },
+  { emoji: '💌', text: '당신과 함께하는 모든 순간이\n내겐 선물이에요.\n생일 축하해요, 사랑해요.' },
+  { emoji: '🌙', text: '밤하늘의 별이 다 모여도\n당신만큼 반짝이지 않아요.\n오늘 하루 온전히 행복하길 바라요.' },
+  { emoji: '🎂', text: '케이크 위의 초를 끄며\n소원 하나 빌어줘요 —\n나는 이미 당신 곁에 있으니까요.' },
+  { emoji: '🌹', text: '오늘만큼은 모든 걱정을 내려놓고\n그저 사랑받는 하루를 보내요.\n당신은 그럴 자격이 있어요.' },
+  { emoji: '💫', text: '당신을 만난 이후로\n매일이 더 특별해졌어요.\n해피 버스데이, 나의 소중한 사람.' },
+];
+
+/* ── 생일: 4월 1일 (매년) ── */
+function isBirthdayToday() {
+  const now = new Date();
+  return now.getMonth() === 3 && now.getDate() === 1;
+}
+function getNextBirthday() {
+  const now = new Date();
+  let bd = new Date(now.getFullYear(), 3, 1, 0, 0, 0);
+  if (now >= bd) bd = new Date(now.getFullYear() + 1, 3, 1, 0, 0, 0);
+  return bd;
+}
+
+/* ── Stars ── */
+(function() {
+  const layer = document.getElementById('starsLayer');
+  for (let i = 0; i < 90; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const sz = 1 + Math.random() * 2.5;
+    s.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;animation-duration:${2+Math.random()*4}s;animation-delay:${Math.random()*5}s;`;
+    layer.appendChild(s);
+  }
+})();
+
+/* ── Ambient bg ── */
+(function() {
+  const cv = document.getElementById('bgCanvas');
+  const ctx = cv.getContext('2d');
+  let W, H, t = 0;
+  function resize() { W = cv.width = window.innerWidth; H = cv.height = window.innerHeight; }
+  resize(); window.addEventListener('resize', resize);
+  const orbs = [
+    { x:.15, y:.2,  r:.38, c:'#4a006a' },
+    { x:.85, y:.15, r:.32, c:'#6a0030' },
+    { x:.5,  y:.85, r:.42, c:'#3d0055' },
+    { x:.25, y:.75, r:.28, c:'#5a002a' },
+  ];
+  function draw() {
+    ctx.clearRect(0,0,W,H);
+    orbs.forEach((o, i) => {
+      const dx = Math.sin(t*.0004+i*1.3)*.04, dy = Math.cos(t*.0003+i*.9)*.04;
+      const g = ctx.createRadialGradient((o.x+dx)*W,(o.y+dy)*H,0,(o.x+dx)*W,(o.y+dy)*H,o.r*Math.max(W,H));
+      g.addColorStop(0, o.c+'cc'); g.addColorStop(1,'transparent');
+      ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+    });
+    t++; requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ── Confetti ── */
+let confFrame;
+function launchConfetti() {
+  const cv = document.getElementById('confettiCanvas');
+  const ctx = cv.getContext('2d');
+  cv.width = window.innerWidth; cv.height = window.innerHeight;
+  const cols = ['#ff6fd8','#ffe16a','#ff9a44','#a78bfa','#34d399','#f9a8d4','#67e8f9'];
+  const pieces = Array.from({length:170}, () => ({
+    x:Math.random()*cv.width, y:-10-Math.random()*300,
+    w:6+Math.random()*7, h:3+Math.random()*4,
+    c:cols[Math.floor(Math.random()*cols.length)],
+    vx:(Math.random()-.5)*5, vy:3+Math.random()*5,
+    rot:Math.random()*360, vr:(Math.random()-.5)*10, alpha:1
+  }));
+  cancelAnimationFrame(confFrame);
+  function draw() {
+    ctx.clearRect(0,0,cv.width,cv.height);
+    let any = false;
+    pieces.forEach(p => {
+      if (p.y < cv.height+30) {
+        any=true; p.x+=p.vx; p.y+=p.vy; p.rot+=p.vr;
+        if (p.y > cv.height*.5) p.alpha=Math.max(0,p.alpha-.013);
+        ctx.save(); ctx.globalAlpha=p.alpha; ctx.fillStyle=p.c;
+        ctx.translate(p.x,p.y); ctx.rotate(p.rot*Math.PI/180);
+        ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h); ctx.restore();
+      }
+    });
+    if (any) confFrame=requestAnimationFrame(draw);
+    else ctx.clearRect(0,0,cv.width,cv.height);
+  }
+  draw();
+}
+
+/* ── Countdown ── */
+function updateCountdown() {
+  const diff = getNextBirthday() - new Date();
+  if (diff <= 0) { location.reload(); return; }
+  const d = Math.floor(diff/86400000);
+  const h = Math.floor((diff%86400000)/3600000);
+  const m = Math.floor((diff%3600000)/60000);
+  const s = Math.floor((diff%60000)/1000);
+  document.getElementById('cd-days').textContent    = String(d).padStart(2,'0');
+  document.getElementById('cd-hours').textContent   = String(h).padStart(2,'0');
+  document.getElementById('cd-minutes').textContent = String(m).padStart(2,'0');
+  document.getElementById('cd-seconds').textContent = String(s).padStart(2,'0');
+}
+
+/* ── Slideshow ── */
+let cur = 0, slideTimer;
+const AUTO = 4200;
+
+function buildSlides() {
+  const track = document.getElementById('slideTrack');
+  const dots  = document.getElementById('slideDots');
+  MESSAGES.forEach((m, i) => {
+    const el = document.createElement('div');
+    el.className = 'slide' + (i===0?' active':'');
+    el.innerHTML = `<div><span class="slide-emoji">${m.emoji}</span><p class="slide-text">${m.text.replace(/\n/g,'<br/>')}</p></div>`;
+    track.appendChild(el);
+    const d = document.createElement('div');
+    d.className = 'dot'+(i===0?' active':'');
+    d.onclick = () => goTo(i);
+    dots.appendChild(d);
+  });
+  updateProg();
+}
+
+function updateProg() {
+  document.getElementById('progressFill').style.width = ((cur+1)/MESSAGES.length*100)+'%';
+}
+
+function goTo(next) {
+  if (next===cur) return;
+  const slides = document.querySelectorAll('.slide');
+  const dots   = document.querySelectorAll('.dot');
+  const prev   = cur;
+
+  slides[prev].classList.remove('active');
+  slides[prev].classList.add('exit-left');
+  setTimeout(() => slides[prev].classList.remove('exit-left'), 650);
+
+  slides[next].classList.add('active');
+  dots[prev].classList.remove('active');
+  dots[next].classList.add('active');
+  cur = next;
+  updateProg();
+  resetTimer();
+}
+
+function nextSlide() { goTo((cur+1)%MESSAGES.length); }
+function prevSlide()  { goTo((cur-1+MESSAGES.length)%MESSAGES.length); }
+
+function resetTimer() {
+  clearInterval(slideTimer);
+  slideTimer = setInterval(nextSlide, AUTO);
+}
+
+/* ── Init ── */
+if (isBirthdayToday()) {
+  document.getElementById('birthdayPage').classList.remove('hidden');
+  buildSlides();
+  resetTimer();
+  setTimeout(launchConfetti, 400);
+  setTimeout(launchConfetti, 3200);
+  setTimeout(launchConfetti, 6800);
+} else {
+  document.getElementById('countdownPage').classList.remove('hidden');
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+}
+</script>
 </body>
 </html>
